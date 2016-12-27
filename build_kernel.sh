@@ -11,7 +11,7 @@ make clean && make mrproper
 echo "export ARCH=arm"
 export ARCH=arm
 
-#make Suemax_trelte_defconfig
-make trelte_00_defconfig
+make Suemax_trelte_Basic_defconfig
+#make trelte_00_defconfig
 
-make -j
+make
