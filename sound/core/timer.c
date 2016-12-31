@@ -1012,8 +1012,8 @@ static int snd_timer_s_start(struct snd_timer * timer)
 		njiff += timer->sticks - priv->correction;
 		priv->correction = 0;
 	}
-	priv->last_expires = priv->tlist.expires = njiff;
-	add_timer(&priv->tlist);
+	priv->last_expires = njiff;
+	mod_timer(&priv->tlist, njiff);
 	return 0;
 }
 
@@ -1862,17 +1862,6 @@ static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 	return -ENOTTY;
 }
 
-static long snd_timer_user_ioctl(struct file *file, unsigned int cmd,
-				 unsigned long arg)
-{
-	struct snd_timer_user *tu = file->private_data;
-	long ret;
-
-	mutex_lock(&tu->ioctl_lock);
-	ret = __snd_timer_user_ioctl(file, cmd, arg);
-	mutex_unlock(&tu->ioctl_lock);
-	return ret;
-}
 
 static long snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 				 unsigned long arg)
